@@ -2,4 +2,4 @@ data/benign/*
 data/malignant/*
 data/normal/*
 env/
-src/__pyapache__
+**/__pycache__/

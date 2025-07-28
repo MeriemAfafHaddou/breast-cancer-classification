@@ -49,7 +49,7 @@ def plot_class_distribution(dataset_path: Path, classes: list[str]):
         counts.append(len(images))
 
     plt.figure(figsize=(6, 4))
-    bars = plt.bar(classes, counts, color='navy')
+    bars = plt.bar(classes, counts, color='mediumpurple')
 
     for bar_chart in bars:
         height = bar_chart.get_height()
