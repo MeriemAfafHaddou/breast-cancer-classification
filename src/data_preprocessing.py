@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 from keras.src.legacy.preprocessing.image import ImageDataGenerator
-from sklearn.model_selection import train_test_split
 from sklearn.model_selection import StratifiedKFold
 
 
@@ -81,12 +80,15 @@ def k_fold_augment(X, y, n_splits=10, augmenter=None, random_state=42):
 
         # Augment each class in the training fold
         X_balanced, y_balanced = [], []
+        print(classes)
         for class_idx in classes:
             X_aug_class, y_aug_class = augment_class(
                 X_train, y_train, class_idx, target_count, augmenter
             )
             X_balanced.append(X_aug_class)
             y_balanced.append(y_aug_class)
+            print(f"Class {class_idx} original shape: {X_train.shape}")
+            print(f"Class {class_idx} augmented shape: {X_aug_class.shape}")
 
         X_train_balanced = np.concatenate(X_balanced)
         y_train_balanced = np.concatenate(y_balanced)
