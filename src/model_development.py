@@ -1,8 +1,18 @@
-import keras as K
-from src.evaluation_metrics import f1_m, precision_m, recall_m
+"""
+Model definition for breast ultrasound classification using
+a ResNet50 backbone with a custom classification head
+and medical-focused evaluation metrics.
+"""
 
-# Define a function to build the model architecture
+import keras as K
+
+from evaluation_metrics import f1_m, precision_m, recall_m
+
+
 def build_model():
+    """
+    Build the model architecture
+    """
     base = K.applications.ResNet50(
         weights='imagenet',
         include_top=False,

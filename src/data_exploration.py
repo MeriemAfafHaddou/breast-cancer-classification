@@ -1,4 +1,19 @@
+"""
+Data Exploration Utilities for Ultrasound Images
+
+Functions:
+- show_samples: Display a few sample images per class.
+- plot_class_distribution: Show the number of images in each class.
+
+Notes:
+- Each class should have its own subdirectory under the dataset path.
+- Files containing 'mask' in their name are ignored.
+- Designed for grayscale ultrasound images.
+"""
+
+# pylint: disable=no-member
 from pathlib import Path
+
 import cv2
 import matplotlib.pyplot as plt
 
@@ -21,11 +36,10 @@ def show_samples(dataset_path: Path, classes: list[str], num_samples=2):
 
             img = cv2.imread(fname, cv2.IMREAD_GRAYSCALE)
             if img is not None:
-                plt.subplot(num_samples, len(classes),
-                            displayed * len(classes) + i + 1)
-                plt.imshow(img, cmap='gray')
+                plt.subplot(num_samples, len(classes), displayed * len(classes) + i + 1)
+                plt.imshow(img, cmap="gray")
                 plt.title(cls_name.capitalize())
-                plt.axis('off')
+                plt.axis("off")
                 displayed += 1
 
             if displayed >= num_samples:
@@ -45,16 +59,22 @@ def plot_class_distribution(dataset_path: Path, classes: list[str]):
     counts = []
     for cls in classes:
         class_dir = dataset_path / Path(cls)
-        images = [img for img in class_dir.iterdir() if 'mask' not in img.name]
+        images = [img for img in class_dir.iterdir() if "mask" not in img.name]
         counts.append(len(images))
 
     plt.figure(figsize=(6, 4))
-    bars = plt.bar(classes, counts, color='mediumpurple')
+    bars = plt.bar(classes, counts, color="mediumpurple")
 
     for bar_chart in bars:
         height = bar_chart.get_height()
-        plt.text(bar_chart.get_x() + bar_chart.get_width() / 2, height,
-                 str(height), ha='center', va='bottom', fontsize=10)
+        plt.text(
+            bar_chart.get_x() + bar_chart.get_width() / 2,
+            height,
+            str(height),
+            ha="center",
+            va="bottom",
+            fontsize=10,
+        )
 
     plt.title("Class Distribution")
     plt.xlabel("Class")
