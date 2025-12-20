@@ -1,26 +1,33 @@
-from tensorflow.keras import backend as K
+from matplotlib import pyplot as plt
+import numpy as np
 
-def recall_m(y_true, y_pred):
-    y_pred = K.one_hot(K.argmax(y_pred, axis=-1), num_classes=3)
-    y_true = K.one_hot(K.cast(y_true, 'int32'), num_classes=3)
+def summarize_cv_results(val_scores, metric_names):
+    """
+    Displays mean ± std for each metric across folds.
+    """
+    scores = np.array(val_scores)
 
-    tp = K.sum(K.cast(y_true * y_pred, 'float'), axis=0)
-    fn = K.sum(K.cast(y_true * (1 - y_pred), 'float'), axis=0)
+    print("📊 Cross-Validation Performance Summary\n")
+    for i, name in enumerate(metric_names):
+        mean = scores[:, i].mean()
+        std = scores[:, i].std()
+        print(f"{name:20s}: {mean:.4f} ± {std:.4f}")
 
-    recall = tp / (tp + fn + K.epsilon())
-    return K.mean(recall)  # macro average
 
-def precision_m(y_true, y_pred):
-    y_pred = K.one_hot(K.argmax(y_pred, axis=-1), num_classes=3)
-    y_true = K.one_hot(K.cast(y_true, 'int32'), num_classes=3)
+def plot_cv_metrics(val_scores, metric_names):
+    """
+    Plots metric values across folds.
+    """
+    scores = np.array(val_scores)
 
-    tp = K.sum(K.cast(y_true * y_pred, 'float'), axis=0)
-    fp = K.sum(K.cast((1 - y_true) * y_pred, 'float'), axis=0)
+    plt.figure(figsize=(8, 4))
+    for i, name in enumerate(metric_names):
+        plt.plot(scores[:, i], marker="o", label=name)
 
-    precision = tp / (tp + fp + K.epsilon())
-    return K.mean(precision)  # macro average
-
-def f1_m(y_true, y_pred):
-    precision = precision_m(y_true, y_pred)
-    recall = recall_m(y_true, y_pred)
-    return 2*((precision*recall)/(precision+recall+K.epsilon()))
+    plt.xlabel("Fold")
+    plt.ylabel("Metric Value")
+    plt.title("Cross-Validation Metrics Across Folds")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
