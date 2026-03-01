@@ -63,6 +63,12 @@ Class wise performance:
 
 ---
 
+## Explainability (XAI)
+- Grad-CAM was used to visualize which regions of the ultrasound images influenced the model’s predictions.
+- Heatmaps and overlays confirm that the model focuses on lesion areas, improving interpretability and clinical trust.
+
+---
+
 ## Key Insights
 Experiments highlighted strong sensitivity of convolutional neural networks to data imbalance, acquisition variability, and population shift in breast ultrasound classification. These findings exposed limits of scale focused learning and emphasized the importance of inductive bias, structured representations, and self supervised learning approaches, especially for medical imaging tasks with limited data.
 
