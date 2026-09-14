@@ -54,7 +54,7 @@ After validation, the model was trained on all available data and evaluated on a
 
 ### Classification Report
 - Accuracy: 0.889
-- Balanced Accuracy: 0.842
+- Balanced Accuracy: 0.851
 
 Class wise performance:
 - Benign: high recall and strong precision
