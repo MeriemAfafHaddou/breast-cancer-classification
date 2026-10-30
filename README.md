@@ -1,82 +1,72 @@
 # Breast Ultrasound Image Classification
 
 ## Overview
-This project addresses the classification of breast ultrasound images into three classes: Benign, Malignant, and Normal. The objective is to build a robust deep learning model suitable for small and imbalanced medical imaging datasets.
 
----
+This project explores deep learning for breast ultrasound image classification into three categories: Benign, Malignant, and Normal.
+
+Beyond classification performance, I also examine how the model performs across different classes and visualize the image regions influencing its predictions.
 
 ## Dataset
+
 - Total images: 780
-- Three classes
-- Class imbalance present
+- Three classes: Benign, Malignant, and Normal
+- Imbalanced class distribution
 
-Data augmentation is applied only to training data. Validation and test data remain untouched.
-
----
+The dataset is divided into a development set and a held-out test set. Data augmentation is used to address class imbalance during training.
 
 ## Model
-- Backbone: ResNet50 pretrained on ImageNet
-- Fine tuning: last layers only
-- Head:
+
+- **Architecture:** ResNet50 pretrained on ImageNet
+- **Fine-tuning:** Last layers
+- **Classification head:**
   - Global Average Pooling
   - Dense layer with 512 units
-  - Batch Normalization
-  - ReLU
+  - Batch Normalization and ReLU
   - Dropout
   - Softmax output with 3 classes
 
-Loss function: Sparse Categorical Crossentropy
-Optimizer: Adam
-
----
+**Loss function:** Sparse Categorical Crossentropy  
+**Optimizer:** Adam
 
 ## Training and Evaluation
-- 5 fold stratified cross validation
-- New model initialized for each fold
-- Metrics:
-  - Accuracy
-  - Precision
-  - Recall
-  - F1 score
-  - Balanced accuracy
 
----
+The model is evaluated using 5-fold stratified cross-validation. A new model is initialized and trained for each fold.
 
-## Cross Validation Results
+Evaluation metrics include:
+- Accuracy
+- Precision
+- Recall
+- F1-score
+- Balanced accuracy
+
+Class-wise metrics and confusion matrices are used to examine differences in classification performance, particularly for malignant cases.
+
+## Cross-Validation Results
+
 - Average validation accuracy: 0.81
-- Best fold accuracy: ~0.86
-- Stable precision, recall, and F1 across folds
+- Best fold accuracy: approximately 0.86
 
----
+Performance is also examined across folds using precision, recall, and F1-score.
 
-## Final Training on Full Dataset
-After validation, the model was trained on all available data and evaluated on a held out test set.
+## Final Test Evaluation
 
-### Classification Report
-- Accuracy: 0.889
-- Balanced Accuracy: 0.851
+The final model is evaluated on a held-out test set.
 
-Class wise performance:
-- Benign: high recall and strong precision
-- Malignant: slightly lower recall, clinically important error source
-- Normal: high precision with lower recall due to limited samples
+- **Accuracy:** 85.47%
+- **Balanced accuracy:** 85.08%
 
----
+The results show differences in performance across the three classes. Malignant-case detection receives particular attention because missed malignant predictions are especially important in this application.
 
-## Explainability (XAI)
-- Grad-CAM was used to visualize which regions of the ultrasound images influenced the model’s predictions.
-- Heatmaps and overlays confirm that the model focuses on lesion areas, improving interpretability and clinical trust.
+## Model Interpretation
 
----
+Grad-CAM is used to visualize image regions that contribute to the model's predictions.
 
-## Key Insights
-Experiments highlighted strong sensitivity of convolutional neural networks to data imbalance, acquisition variability, and population shift in breast ultrasound classification. These findings exposed limits of scale focused learning and emphasized the importance of inductive bias, structured representations, and self supervised learning approaches, especially for medical imaging tasks with limited data.
-
----
+Heatmaps and overlays provide a way to inspect the model's focus and compare its predictions with the original ultrasound images. These visualizations offer additional context for interpreting model behavior, but do not establish whether the highlighted regions are clinically meaningful.
 
 ## Tools
+
 - Python
 - TensorFlow and Keras
 - NumPy
-- Scikit Learn
+- Scikit-learn
 - Matplotlib
